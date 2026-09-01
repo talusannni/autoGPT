@@ -26,9 +26,18 @@ test('primesUpTo returns all primes through the limit', () => {
   assert.deepEqual(primesUpTo(1), []);
 });
 
-test('math functions reject invalid input', () => {
+test('math functions reject invalid input and unreasonable work', () => {
   assert.throws(() => fibonacci(-1), RangeError);
+  assert.throws(() => fibonacci(100_001), RangeError);
   assert.throws(() => factorial(1.5), TypeError);
+  assert.throws(() => factorial(100_001), RangeError);
   assert.throws(() => isPrime(2.5), TypeError);
+  assert.throws(() => isPrime(Number.MAX_SAFE_INTEGER), TypeError);
   assert.throws(() => primesUpTo(-1), RangeError);
+  assert.throws(() => primesUpTo(10_000_001), RangeError);
+});
+
+test('large integer results remain exact', () => {
+  assert.equal(typeof fibonacci(79), 'bigint');
+  assert.equal(typeof factorial(21), 'bigint');
 });
