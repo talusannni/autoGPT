@@ -2,7 +2,8 @@
 
 import { factorial, fibonacci, primesUpTo } from './math.js';
 
-const [command, value] = process.argv.slice(2);
+const args = process.argv.slice(2);
+const [command, value] = args;
 
 function printUsage() {
   console.error('Usage: utility-math <fibonacci|factorial|primes> <non-negative integer>');
@@ -22,7 +23,7 @@ function parseInteger(input) {
 }
 
 try {
-  if (!command || value === undefined || !['fibonacci', 'factorial', 'primes'].includes(command)) {
+  if (args.length !== 2 || !['fibonacci', 'factorial', 'primes'].includes(command)) {
     printUsage();
     process.exitCode = 1;
   } else {
