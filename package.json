@@ -3,9 +3,16 @@
   "version": "1.0.0",
   "description": "A simple Node.js CLI for Fibonacci, factorial, and prime numbers.",
   "type": "module",
+  "main": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
   "bin": {
     "utility-math": "./src/cli.js"
   },
+  "files": [
+    "src/"
+  ],
   "scripts": {
     "test": "node --test"
   },
