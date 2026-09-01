@@ -1,0 +1,16 @@
+{
+  "name": "utility-math-cli",
+  "version": "1.0.0",
+  "description": "A simple Node.js CLI for Fibonacci, factorial, and prime numbers.",
+  "type": "module",
+  "bin": {
+    "utility-math": "./src/cli.js"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT"
+}
