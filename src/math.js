@@ -1,10 +1,7 @@
-const MAX_FIBONACCI_N = 100_000;
-const MAX_FACTORIAL_N = 100_000;
-const MAX_PRIME_INPUT = 10_000_000;
-const MAX_PRIME_LIMIT = 10_000_000;
+import { LIMITS } from './limits.js';
 
 export function fibonacci(n) {
-  assertBoundedNonNegativeInteger(n, 'n', MAX_FIBONACCI_N);
+  assertBoundedNonNegativeInteger(n, 'n', LIMITS.fibonacci);
 
   let a = 0n;
   let b = 1n;
@@ -13,22 +10,22 @@ export function fibonacci(n) {
     [a, b] = [b, a + b];
   }
 
-  return Number.isSafeInteger(Number(a)) ? Number(a) : a;
+  return toSafeNumberOrBigInt(a);
 }
 
 export function factorial(n) {
-  assertBoundedNonNegativeInteger(n, 'n', MAX_FACTORIAL_N);
+  assertBoundedNonNegativeInteger(n, 'n', LIMITS.factorial);
 
   let result = 1n;
   for (let i = 2; i <= n; i += 1) {
     result *= BigInt(i);
   }
 
-  return Number.isSafeInteger(Number(result)) ? Number(result) : result;
+  return toSafeNumberOrBigInt(result);
 }
 
 export function isPrime(n) {
-  assertBoundedNonNegativeInteger(n, 'n', MAX_PRIME_INPUT);
+  assertBoundedNonNegativeInteger(n, 'n', LIMITS.isPrime);
 
   if (n < 2) return false;
   if (n === 2) return true;
@@ -42,7 +39,7 @@ export function isPrime(n) {
 }
 
 export function primesUpTo(limit) {
-  assertBoundedNonNegativeInteger(limit, 'limit', MAX_PRIME_LIMIT);
+  assertBoundedNonNegativeInteger(limit, 'limit', LIMITS.primesUpTo);
 
   if (limit < 2) return [];
 
@@ -63,14 +60,18 @@ export function primesUpTo(limit) {
   return primes;
 }
 
-function assertInteger(value, name) {
+function toSafeNumberOrBigInt(value) {
+  return value <= BigInt(Number.MAX_SAFE_INTEGER) ? Number(value) : value;
+}
+
+function assertSafeInteger(value, name) {
   if (!Number.isSafeInteger(value)) {
     throw new TypeError(`${name} must be a safe integer`);
   }
 }
 
 function assertBoundedNonNegativeInteger(value, name, maximum) {
-  assertInteger(value, name);
+  assertSafeInteger(value, name);
   if (value < 0) {
     throw new RangeError(`${name} must be non-negative`);
   }
