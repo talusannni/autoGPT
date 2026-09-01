@@ -1,25 +1,29 @@
-export function fibonacci(n) {
-  assertNonNegativeInteger(n, 'n');
+const MAX_FIBONACCI_N = 100_000;
+const MAX_FACTORIAL_N = 100_000;
+const MAX_PRIME_LIMIT = 10_000_000;
 
-  let a = 0;
-  let b = 1;
+export function fibonacci(n) {
+  assertBoundedNonNegativeInteger(n, 'n', MAX_FIBONACCI_N);
+
+  let a = 0n;
+  let b = 1n;
 
   for (let i = 0; i < n; i += 1) {
     [a, b] = [b, a + b];
   }
 
-  return a;
+  return Number.isSafeInteger(Number(a)) ? Number(a) : a;
 }
 
 export function factorial(n) {
-  assertNonNegativeInteger(n, 'n');
+  assertBoundedNonNegativeInteger(n, 'n', MAX_FACTORIAL_N);
 
-  let result = 1;
+  let result = 1n;
   for (let i = 2; i <= n; i += 1) {
-    result *= i;
+    result *= BigInt(i);
   }
 
-  return result;
+  return Number.isSafeInteger(Number(result)) ? Number(result) : result;
 }
 
 export function isPrime(n) {
@@ -29,7 +33,7 @@ export function isPrime(n) {
   if (n === 2) return true;
   if (n % 2 === 0) return false;
 
-  for (let divisor = 3; divisor * divisor <= n; divisor += 2) {
+  for (let divisor = 3; divisor <= Math.sqrt(n); divisor += 2) {
     if (n % divisor === 0) return false;
   }
 
@@ -37,7 +41,7 @@ export function isPrime(n) {
 }
 
 export function primesUpTo(limit) {
-  assertNonNegativeInteger(limit, 'limit');
+  assertBoundedNonNegativeInteger(limit, 'limit', MAX_PRIME_LIMIT);
 
   const primes = [];
   for (let n = 2; n <= limit; n += 1) {
@@ -48,14 +52,17 @@ export function primesUpTo(limit) {
 }
 
 function assertInteger(value, name) {
-  if (!Number.isInteger(value)) {
-    throw new TypeError(`${name} must be an integer`);
+  if (!Number.isSafeInteger(value)) {
+    throw new TypeError(`${name} must be a safe integer`);
   }
 }
 
-function assertNonNegativeInteger(value, name) {
+function assertBoundedNonNegativeInteger(value, name, maximum) {
   assertInteger(value, name);
   if (value < 0) {
     throw new RangeError(`${name} must be non-negative`);
+  }
+  if (value > maximum) {
+    throw new RangeError(`${name} must be <= ${maximum}`);
   }
 }
