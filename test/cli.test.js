@@ -23,6 +23,20 @@ test('CLI lists primes through a limit', () => {
   assert.equal(execFileSync(process.execPath, [cliPath, 'primes', '10'], { encoding: 'utf8' }).trim(), '2 3 5 7');
 });
 
+test('CLI provides help', () => {
+  const result = runCli('--help');
+  assert.equal(result.status, 0);
+  assert.match(result.stdout, /Usage:/);
+  assert.equal(result.stderr, '');
+});
+
+test('CLI reports package version', () => {
+  const result = runCli('--version');
+  assert.equal(result.status, 0);
+  assert.match(result.stdout.trim(), /^\d+\.\d+\.\d+$/);
+  assert.equal(result.stderr, '');
+});
+
 test('CLI rejects missing arguments', () => {
   const result = runCli('fibonacci');
   assert.equal(result.status, 1);
