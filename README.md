@@ -1,6 +1,6 @@
 # Utility Math CLI
 
-A small Node.js CLI for common utility math operations:
+A small Node.js package and CLI for common utility math operations:
 
 - Fibonacci numbers
 - Factorials
@@ -10,7 +10,7 @@ A small Node.js CLI for common utility math operations:
 
 - Node.js 20+
 
-## Usage
+## CLI usage
 
 ```bash
 node src/cli.js fibonacci 10
@@ -21,6 +21,9 @@ node src/cli.js factorial 5
 
 node src/cli.js primes 20
 # 2 3 5 7 11 13 17 19
+
+node src/cli.js --help
+node src/cli.js --version
 ```
 
 The command accepts exactly one operation and one non-negative safe integer. Inputs are bounded to prevent accidental or malicious unbounded work:
@@ -33,7 +36,18 @@ Large Fibonacci and factorial results are returned as `bigint` values when they 
 
 Invalid, missing, extra, unsafe, or out-of-range arguments return a non-zero exit code.
 
-After installing the package, the `utility-math` executable can also be used.
+## Library usage
+
+The package exposes a stable root entry point:
+
+```js
+import { factorial, fibonacci, isPrime, primesUpTo, LIMITS } from 'utility-math-cli';
+
+const value = fibonacci(10);
+const primes = primesUpTo(20);
+```
+
+`LIMITS` is frozen and exposes the maximum supported input for each operation.
 
 ## Tests
 
@@ -44,4 +58,4 @@ npm ci
 npm test
 ```
 
-The suite covers the math functions, exact large-integer results, bounded inputs, invalid inputs, CLI behavior, and CLI error handling. GitHub Actions runs the test suite on every push and pull request.
+The suite covers the math functions, exact large-integer results, bounded inputs, invalid inputs, the public package entry point, CLI behavior, and CLI error handling. GitHub Actions runs the test suite on every push and pull request.
