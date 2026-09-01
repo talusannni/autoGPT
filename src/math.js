@@ -1,5 +1,6 @@
 const MAX_FIBONACCI_N = 100_000;
 const MAX_FACTORIAL_N = 100_000;
+const MAX_PRIME_INPUT = 10_000_000;
 const MAX_PRIME_LIMIT = 10_000_000;
 
 export function fibonacci(n) {
@@ -27,7 +28,7 @@ export function factorial(n) {
 }
 
 export function isPrime(n) {
-  assertInteger(n, 'n');
+  assertBoundedNonNegativeInteger(n, 'n', MAX_PRIME_INPUT);
 
   if (n < 2) return false;
   if (n === 2) return true;
