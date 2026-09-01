@@ -43,9 +43,20 @@ export function isPrime(n) {
 export function primesUpTo(limit) {
   assertBoundedNonNegativeInteger(limit, 'limit', MAX_PRIME_LIMIT);
 
+  if (limit < 2) return [];
+
+  const composite = new Uint8Array(limit + 1);
   const primes = [];
+
   for (let n = 2; n <= limit; n += 1) {
-    if (isPrime(n)) primes.push(n);
+    if (composite[n] === 0) {
+      primes.push(n);
+      if (n <= Math.sqrt(limit)) {
+        for (let multiple = n * n; multiple <= limit; multiple += n) {
+          composite[multiple] = 1;
+        }
+      }
+    }
   }
 
   return primes;
