@@ -32,7 +32,7 @@ test('math functions reject invalid input and unreasonable work', () => {
   assert.throws(() => factorial(1.5), TypeError);
   assert.throws(() => factorial(100_001), RangeError);
   assert.throws(() => isPrime(2.5), TypeError);
-  assert.throws(() => isPrime(Number.MAX_SAFE_INTEGER), TypeError);
+  assert.throws(() => isPrime(10_000_001), RangeError);
   assert.throws(() => primesUpTo(-1), RangeError);
   assert.throws(() => primesUpTo(10_000_001), RangeError);
 });
